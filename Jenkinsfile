@@ -29,8 +29,8 @@ pipeline {
             steps {
                 echo 'Docker Image Create'
                 sh '''
-                docker build -t spring-petclinic:{BUILD_NUMBER} .
-                docker tag spring-petclinic:$(BUILD_NUMBER) dhyy88/spring-petclinic:latest
+                docker build -t spring-petclinic:${BUILD_NUMBER} .
+                docker tag spring-petclinic:${BUILD_NUMBER} dhyy88/spring-petclinic:latest
                 '''
             }
         }
@@ -42,12 +42,12 @@ pipeline {
                 sh 'echo ${DOCKERHUB_CRED_PSW} | docker login -u ${DOCKERHUB_CRED_USR} --password-stdin'
 
                 // Docker Hub Push
-                sh 'docker image push dhyy88@spring-petclinic:latest'
+                sh 'docker image push dhyy88/spring-petclinic:latest'
             }
             post {
                 always {
                     sh '''
-                    docker rmi -f spring-petclinic:${BUILD_NUMBER)
+                    docker rmi -f spring-petclinic:${BUILD_NUMBER}
                     docker rmi -f dhyy88/spring-petclinic:latest
                     '''
                 }
