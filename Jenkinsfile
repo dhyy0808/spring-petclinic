@@ -44,40 +44,6 @@ pipeline {
                 // Docker Hub Push
                 sh 'docker image push dhyy88/spring-petclinic:latest'
             }
-            post {
-                always {
-                    sh '''
-                    docker rmi -f spring-petclinic:${BUILD_NUMBER}
-                    docker rmi -f dhyy88/spring-petclinic:latest
-                    '''
-                }
-            }
         }
-    
-        // SSH를 이용한 실행파일 전송
-        stage('SSH Publish') {
-            steps {
-                echo 'SSH Publish'
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'target', 
-                transfers: [sshTransfer(cleanRemote: false, excludes: '', 
-                execCommand: '''
-                docker rm -f $(docker ps -aq)
-                docker rmi -f $(docker images -q)
-                docker run -itd -p 80:8080 --name=spring-petclinic dhyy88/spring-petclinic:latest
-                ''', 
-                execTimeout: 120000, 
-                flatten: false, 
-                makeEmptyDirs: false, 
-                noDefaultExcludes: false, 
-                patternSeparator: '[, ]+', 
-                remoteDirectory: '', 
-                remoteDirectorySDF: false, 
-                removePrefix: 'target', 
-                sourceFiles: 'target/*.jar')], 
-                usePromotionTimestamp: false, 
-                useWorkspaceInPromotion: false, 
-                verbose: false)])
-            }
-        }
-    }
+    }    
 }
