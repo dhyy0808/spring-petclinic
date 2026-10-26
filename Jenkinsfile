@@ -62,7 +62,7 @@ pipeline {
                 transfers: [sshTransfer(cleanRemote: false, excludes: '', 
                 execCommand: '''
                 docker rm -f $(docker ps -aq)
-                docker rimi -f $(docker images -q)
+                docker rmi -f $(docker images -q)
                 docker run -itd -p 80:8080 --name=spring-petclinic dhyy88/spring-petclinic:latest
                 ''', 
                 execTimeout: 120000, 
