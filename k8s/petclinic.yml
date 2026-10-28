@@ -60,11 +60,11 @@ spec:
               containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /livez
+              path: /clinic/livez
               port: http
           readinessProbe:
             httpGet:
-              path: /readyz
+              path: /clinic/readyz
               port: http
           volumeMounts:
             - mountPath: /bindings/secret
